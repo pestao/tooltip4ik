@@ -3,7 +3,10 @@
         background: '#e3e3e3',
         color: 'black',
         rounded: false,
-        title: 'Hello there'
+        title: 'Hello there',
+        dontFollowCursor: false,
+        fadeIn: 250,
+        fadeOut: 0
     };
 
     var Tooltip = function($el, options){
@@ -30,21 +33,29 @@
             .elem
             .appendTo('body')
             .text(this.options.title)
-            .hide()
+
             .css({
                 backgroundColor: this.options.background,
                 color: this.options.color,
                 top: e.pageY + 10,
                 left: e.pageX + 20
             })
-            .fadeIn(350);
+            .fadeIn(this.options.fadeIn);
             if(this.options.rounded) {
                 this.elem.addClass('rounded');
+            };
+            if(this.options.dontFollowCursor) {
+                this.elem.hide()
             };
     };
 
     Tooltip.prototype.hide = function() {
-        this.elem.remove();
+        if(this.options.fadeOut) {
+            this.elem.fadeOut(this.options.fadeOut)
+        }
+        else {
+            this.elem.remove();
+        }
     };
 
     $.fn.tooltip = function (options) {
